@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<projectDescription>
+	<name>Telegram-bot-sample</name>
+	<comment></comment>
+	<projects>
+	</projects>
+	<buildSpec>
+		<buildCommand>
+			<name>org.eclipse.jdt.core.javabuilder</name>
+			<arguments>
+			</arguments>
+		</buildCommand>
+	</buildSpec>
+	<natures>
+		<nature>org.eclipse.jdt.core.javanature</nature>
+	</natures>
+	<linkedResources>
+		<link>
+			<name>telegrambots</name>
+			<type>2</type>
+			<location>/home/sadegh/libs/telegram/TelegramBots-master/src/main/java/org/telegram/telegrambots</location>
+		</link>
+	</linkedResources>
+</projectDescription>
