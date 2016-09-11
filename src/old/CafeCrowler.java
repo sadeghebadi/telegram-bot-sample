@@ -36,8 +36,8 @@ public class CafeCrowler {
 			Category category = new Category();
 			if (row.getElementsByClass("msht-row-title").size() != 0) {
 
-				category.title = row.getElementsByClass("msht-row-title")
-						.get(0).ownText();
+				category.setTitle(row.getElementsByClass("msht-row-title")
+						.get(0).ownText());
 				Elements appRowElements = row.getElementsByClass("msht-app");
 				ArrayList<App> apps = new ArrayList<App>();
 				for (Element appRow : appRowElements) {

@@ -10,7 +10,8 @@ import com.pengrad.telegrambot.response.SendResponse;
 
 public class Telegram {
 
-	public static long chatId = -1001036894190l;
+	public static String chatId = "@cafecafecafe";
+	public static String JOIN_LINK = "https://telegram.me/joinchat/BaTh5DwiBFZqj3V7LSHMVw";
 
 	public static void main(String[] args) {
 		// sendPhotoMessage("ss" , "a.jpg");
@@ -21,23 +22,27 @@ public class Telegram {
 	private static SendResponse sendTextMessage(String message) {
 		TelegramBot bot = TelegramBotAdapter
 				.build("186102655:AAFLUyVcbcqOs9KiY1GsFNKWMTzAngchuP8");
-		SendResponse response = bot.sendMessage("@cafecafecafe", message);
+		SendResponse response = bot.sendMessage(chatId, message);
 		return response;
 	}
 
-	private static SendResponse sendPhotoMessage(String caption,
+	private static SendResponse sendPhotoMessage(App app,
 			String file_name) {
 		TelegramBot bot = TelegramBotAdapter
 				.build("186102655:AAFLUyVcbcqOs9KiY1GsFNKWMTzAngchuP8");
 		SendResponse response = bot.sendPhoto(chatId, new InputFile("img",
-				new File(file_name)), caption, null, new ReplyKeyboardHide());
+				new File(file_name)), app.app_name+"\n"+"@cafebazaar"+"\n"+"#"+getcategoryHashtaq(app), null, null);
 		return response;
 	}
 
+	private static String getcategoryHashtaq(App app) {
+		return DB.getCategory(app.category_id).getTitle().replace(" ", "_");
+	}
+
 	public static boolean sendAppToChannel(App app) {
-		boolean txt = proccessMessage(sendTextMessage(createMessage(app)));
-		boolean img = proccessMessage(sendPhotoMessage(app.app_name, "icons/"
+		boolean img = proccessMessage(sendPhotoMessage(app, "icons"
 				+ app.img.substring(app.img.lastIndexOf("/"), app.img.length())));
+		boolean txt = proccessMessage(sendTextMessage(createMessage(app)));
 		if (txt && img)
 			return true;
 		else
@@ -50,7 +55,13 @@ public class Telegram {
 	}
 
 	private static String createMessage(App app) {
-		return app.app_name;
+		
+		String content = "\n"+app.app_name+"\n"+app.description+"\n\n\n"+"#"+getcategoryHashtaq(app)+"\n\n"+"@cafebazaar";
+		if(Math.random()<0.2){
+			content+="\n"+JOIN_LINK;
+		}
+		
+		return content;
 	}
 
 	public static String convertHtmlToString(String html) {

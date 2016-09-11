@@ -6,7 +6,7 @@ import java.sql.*;
 
 public class DB {
 
-	private static String URL = "jdbc:mysql://127.0.0.1:3306/cafecrawler?useUnicode=true&characterEncoding=UTF-8&useSSL=false";
+	private static String URL = "jdbc:mysql://127.0.0.1:3306/cafecrawler?useUnicode=true&characterEncoding=UTF-8&character_set_results=utf8mb4&useSSL=false";
 	static final String USER = "root";
 	static final String PASS = "qbee";
 
@@ -40,7 +40,6 @@ public class DB {
 
 			}
 		} catch (Exception e) {
-			// TODO: handle exception
 		} finally {
 			try {
 				if (stmt != null)
@@ -69,11 +68,11 @@ public class DB {
 
 			stmt = conn.createStatement();
 			String sql;
-			sql = "SELECT * FROM category where title = '" + category.title
+			sql = "SELECT * FROM category where title = '" + category.getTitle()
 					+ "'";
 			ResultSet rs = stmt.executeQuery(sql);
 			if (!rs.first()) {
-				sql = "Insert into category(title) values('" + category.title
+				sql = "Insert into category(title) values('" + category.getTitle()
 						+ "')";
 				stmt.executeUpdate(sql);
 
@@ -186,8 +185,8 @@ public class DB {
 			ResultSet rs = stmt.executeQuery(sql);
 			if (rs.next()) {
 				category = new Category();
-				category.id = categori_id;
-				category.title = rs.getString("title");
+				category.setId( categori_id);
+				category.setTitle(rs.getString("title"));
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -283,9 +282,9 @@ public class DB {
 		
 		
 		for (Entry<Category, ArrayList<App>> ent : data.entrySet()) {
-			System.out.println(ent.getKey().title);
+			System.out.println(ent.getKey().getTitle());
 			saveCategory(ent.getKey());
-			int category_id = getCategoryId(ent.getKey().title);
+			int category_id = getCategoryId(ent.getKey().getTitle());
 			System.out.println("categoryiss = =" + category_id);
 			for (App app : ent.getValue()) {
 				if (!isInDB(app)) {
@@ -293,11 +292,8 @@ public class DB {
 					saveApp(app);
 				}
 				try {
-					if (getAppDescription(app).equalsIgnoreCase("test1"))
-						updateApp(app.url, /*
-											 * new CafeCrowler().crawlApp(app)
-											 */
-								"test2");
+					if (getAppDescription(app).equalsIgnoreCase("test"))
+						updateApp(app.url,  new CafeCrowler().crawlApp(app));
 				} catch (Exception e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
@@ -341,7 +337,6 @@ public class DB {
 				se.printStackTrace();
 			}
 		}
-		System.out.println("des === " + description);
 		return description;
 	}
 
