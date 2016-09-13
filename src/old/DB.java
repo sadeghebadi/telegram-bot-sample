@@ -94,7 +94,7 @@ public class DB {
 		}
 	}
 
-	public static void updateApp(String url, String description) {
+	public static void updateApp(String url, App app) {
 
 		Connection conn = null;
 		Statement stmt = null;
@@ -109,7 +109,9 @@ public class DB {
 			sql = "SELECT * FROM app where url = '" + url + "'";
 			ResultSet rs = stmt.executeQuery(sql);
 			if (rs.next()) {
-				sql = "UPDATE  app set description = '" + description
+				app.description = app.description.replaceAll("[^\\u0000-\\uFFFF]", "");
+				System.out.println(app.app_name);
+				sql = "UPDATE  app set description = '" + app.description+"',"+"app_category ='"+app.app_category 
 						+ "' where url = '" + url + "'";
 				stmt.executeUpdate(sql);
 
@@ -363,6 +365,7 @@ public class DB {
 				app.url = rs.getString("url");
 				app.price = rs.getString("price");
 				app.app_name = rs.getString("app_name");
+				app.app_category=rs.getString("app_category");
 
 			}
 		} catch (Exception e) {

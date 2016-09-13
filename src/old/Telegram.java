@@ -10,7 +10,7 @@ import com.pengrad.telegrambot.response.SendResponse;
 
 public class Telegram {
 
-	public static String chatId = "@cafecafecafe";
+	public static String chatId = "@cafebazaar";
 	public static String JOIN_LINK = "https://telegram.me/joinchat/BaTh5DwiBFZqj3V7LSHMVw";
 
 	public static void main(String[] args) {
@@ -31,7 +31,7 @@ public class Telegram {
 		TelegramBot bot = TelegramBotAdapter
 				.build("186102655:AAFLUyVcbcqOs9KiY1GsFNKWMTzAngchuP8");
 		SendResponse response = bot.sendPhoto(chatId, new InputFile("img",
-				new File(file_name)), app.app_name+"\n"+"@cafebazaar"+"\n"+"#"+getcategoryHashtaq(app), null, null);
+				new File(file_name)), app.app_name+"\n"+chatId+"\n"+"#"+getcategoryHashtaq(app), null, null);
 		return response;
 	}
 
@@ -39,6 +39,9 @@ public class Telegram {
 		return DB.getCategory(app.category_id).getTitle().replace(" ", "_");
 	}
 
+	private static String getsubcategoryHashtaq(App app) {
+		return app.app_category.replace(" ", "_");
+	}
 	public static boolean sendAppToChannel(App app) {
 		boolean img = proccessMessage(sendPhotoMessage(app, "icons"
 				+ app.img.substring(app.img.lastIndexOf("/"), app.img.length())));
@@ -56,7 +59,7 @@ public class Telegram {
 
 	private static String createMessage(App app) {
 		
-		String content = "\n"+app.app_name+"\n"+app.description+"\n\n\n"+"#"+getcategoryHashtaq(app)+"\n\n"+"@cafebazaar";
+		String content = "\n"+app.app_name+"\n"+app.description+"\n\n\n"+"https://cafebazaar.ir/"+app.url+"\n\n\n"+"#"+getcategoryHashtaq(app)+"\n"+"#"+getsubcategoryHashtaq(app)+"\n\n"+chatId;
 		if(Math.random()<0.2){
 			content+="\n"+JOIN_LINK;
 		}

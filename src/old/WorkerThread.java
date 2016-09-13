@@ -1,4 +1,6 @@
 package old;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 
 public class WorkerThread implements Runnable {
@@ -16,6 +18,10 @@ public class WorkerThread implements Runnable {
 
 	private void processCommand() {
 		try {
+			if(!isInTime()){
+				System.err.println("not valid time");
+				return;
+			}
 			new CafeCrowler().saveApps();
 			System.out.println("crawle completed.....");
 		} catch (Exception e) {
@@ -33,6 +39,22 @@ public class WorkerThread implements Runnable {
 			DB.updateApp(app.url, 0);
 		}
 
+	}
+
+	private boolean isInTime() {
+		Calendar cal = Calendar.getInstance();
+		cal.setTime(new Date());
+		
+		int hour = cal.get(Calendar.HOUR_OF_DAY);
+		int minutes = cal.get(Calendar.MINUTE);
+		System.out.println(hour+":"+minutes);
+		SimpleDateFormat format1 = new SimpleDateFormat("yyyy-MM-dd");
+		System.out.println(cal.getTime());
+
+		if ((hour >= 10 && minutes >= 30 )&&( hour <22 && minutes <= 10) ){
+			return true;
+		}
+		return false;
 	}
 
 	private boolean sendMessage(App app) {

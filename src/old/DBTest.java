@@ -8,6 +8,6 @@ public class DBTest {
 	public static void main(String[] args) {
         ScheduledExecutorService scheduledThreadPool = Executors.newScheduledThreadPool(1);
         WorkerThread worker = new WorkerThread("processing...");
-        scheduledThreadPool.scheduleWithFixedDelay(worker, 0,10, TimeUnit.MINUTES);
+        scheduledThreadPool.scheduleWithFixedDelay(worker, 0,30, TimeUnit.MINUTES);
 	}
 }

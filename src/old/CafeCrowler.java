@@ -54,6 +54,8 @@ public class CafeCrowler {
 							.get(0).getElementsByTag("span").get(0).ownText();
 					app.price = appitem.getElementsByClass("msht-app-price")
 							.get(0).getElementsByTag("span").get(0).ownText();
+				
+
 					if (!new File("icons/"
 							+ app.img.subSequence(app.img.lastIndexOf("/"),
 									app.img.length())).exists()) {
@@ -87,7 +89,7 @@ public class CafeCrowler {
 		}
 	}
 
-	public String crawlApp(App app) throws Exception {
+	public App crawlApp(App app) throws Exception {
 		String url = "https://cafebazaar.ir" + app.url;
 		// System.out.println("https://cafebazaar.ir"+app.url);
 		// System.setProperty("javax.net.ssl.trustStore",
@@ -97,15 +99,26 @@ public class CafeCrowler {
 		// String html = convertStreamToString(conn.getInputStream());
 		// conn.disconnect();
 		// Document doc = Jsoup.parse(html);
-		Document doc = Jsoup.connect(url).get();
+		Document doc = Jsoup.connect(url).ignoreContentType(true)
+		           .userAgent("Mozilla/5.0 (Windows NT 6.1; Win64; x64; rv:25.0) Gecko/20100101 Firefox/25.0")  
+		           .referrer("http://www.google.com")   
+		           .timeout(12000) 
+		           .followRedirects(true)
+		           .execute().parse();
+
 		Element element = doc.getElementsByClass("col-sm-8").get(1);
+		
+		app.app_category = doc.getElementsByAttributeValue("itemprop","applicationSubCategory")
+				.get(0).ownText();
+
 		Element descriptoin = element.getElementsByClass("rtl").get(0);
 		String html = descriptoin.html();
 		html = html.replaceAll("\\<.*?\\>", "").replaceAll("&nbsp;", " ");
 		if (html.contains("\\.")) {
 			html = html.substring(0, html.indexOf("\\."));
 		}
-		return html;
+		app.description = html;
+		return app;
 	}
 
 	private String convertStreamToString(InputStream is) {

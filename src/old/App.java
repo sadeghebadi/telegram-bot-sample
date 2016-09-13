@@ -9,5 +9,6 @@ class App {
 	String url;
 	String price;
 	String description;
+	String app_category;
 	
 }
